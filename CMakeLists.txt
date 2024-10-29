@@ -21,9 +21,20 @@ set(PROJECT_SOURCES
         stk500v2.h
         serial.h
         serial.cpp
-        linuxserial.h
-        linuxserial.cpp
 )
+
+if (WIN32)
+    set (PROJECT_SOURCES
+        ${PROJECT_SOURCES}
+        windowsserial.h
+        windowsserial.cpp)
+else()
+    set (PROJECT_SOURCES
+        ${PROJECT_SOURCES}
+        linuxserial.h
+        linuxserial.cpp)
+endif()
+
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(firmware-updater
