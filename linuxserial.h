@@ -12,9 +12,11 @@ class LinuxSerial : public Serial
 {
 public:
     LinuxSerial();
+    ~LinuxSerial();
 
     void setPort(const QString& port);
-    void writeData(char* data, size_t size);
+    void writeData(const void* data, size_t size);
+    void readData(void* data, size_t size);
 
 private:
     int _fd;

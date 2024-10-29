@@ -17,6 +17,12 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        stk500v2.cpp
+        stk500v2.h
+        serial.h
+        serial.cpp
+        linuxserial.h
+        linuxserial.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -39,9 +45,6 @@ else()
         add_executable(firmware-updater
             ${PROJECT_SOURCES}
             resources.qrc
-            stk500v2.cpp stk500v2.h
-            serial.h serial.cpp
-            linuxserial.h linuxserial.cpp
         )
     endif()
 endif()
