@@ -7,10 +7,13 @@ class Serial
 {
 public:
     Serial();
+    virtual ~Serial();
 
     virtual void setPort(const QString& port) = 0;
     virtual void writeData(const void* data, size_t size) = 0;
     virtual void readData(void* data, size_t size) = 0;
+
+    virtual QStringList serialPorts() = 0;
 };
 
 #endif // SERIAL_H

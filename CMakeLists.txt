@@ -9,7 +9,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
+find_package(QT NAMES Qt6 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
@@ -21,6 +21,10 @@ set(PROJECT_SOURCES
         stk500v2.h
         serial.h
         serial.cpp
+        programmer.h
+        programmer.cpp
+        chromasound.h
+        chromasound.cpp
 )
 
 if (WIN32)
@@ -33,6 +37,13 @@ else()
         ${PROJECT_SOURCES}
         linuxserial.h
         linuxserial.cpp)
+
+    if (LINUX)
+        set (PROJECT_SOURCES
+            ${PROJECT_SOURCES}
+            gpio.cpp
+            gpio.h)
+    endif()
 endif()
 
 
@@ -40,6 +51,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(firmware-updater
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        resources.qrc
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET firmware-updater APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

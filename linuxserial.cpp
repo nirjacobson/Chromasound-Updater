@@ -28,12 +28,33 @@ void LinuxSerial::setPort(const QString& port)
 
 void LinuxSerial::writeData(const void* data, size_t size)
 {
-    write(_fd, data, size);
+    size_t written = 0;
+    do {
+        written += write(_fd, (const char*)data + written, size - written);
+    } while (written < size);
 }
 
 void LinuxSerial::readData(void* data, size_t size)
 {
-    read(_fd, data, size);
+    size_t didRead = 0;
+    do {
+        didRead += read(_fd, (char*)data + didRead, size - didRead);
+    } while (didRead < size);
+}
+
+QStringList LinuxSerial::serialPorts()
+{
+    QDir devDir("/dev");
+
+    QFileInfoList fileInfoList = devDir.entryInfoList(QStringList{"ttyS*", "ttyUSB*", "ttyAMA*"}, QDir::Filters{QDir::System});
+
+    QStringList result;
+
+    for (const QFileInfo& fileInfo : fileInfoList) {
+        result.append(fileInfo.absoluteFilePath());
+    }
+
+    return result;
 }
 
 void LinuxSerial::setupPort()

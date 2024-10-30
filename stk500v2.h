@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#include "serial.h"
+
 #define SIGRD 5
 
 #define STK500V2_START 0x1B
@@ -26,26 +28,26 @@
 #define STK500V2_PARAM_SW_MINOR       0x92
 #define STK500V2_PARAM_VTARGET        0x94
 
-typedef struct {
-  uint32_t load_address;
-} STK500V2;
-
-typedef struct {
+typedef struct STK500V2_Message {
   uint8_t start;
   uint8_t sequenceNumber;
   uint16_t size;
   uint8_t token;
   uint8_t body[512];
   uint8_t checksum;
+
+  void init();
+  uint8_t getChecksum();
 } STK500V2_Message;
 
-void stk500v2_init(STK500V2* stk500v2);
+class STK500v2 {
+public:
+    STK500v2(Serial* serial);
 
-void stk500v2_message_init(STK500V2_Message* message);
-void stk500v2_receive_message(STK500V2_Message* message);
-void stk500v2_send_message(STK500V2_Message* message);
+    void sendMessage(STK500V2_Message* message, STK500V2_Message* response);
 
-void stk500v2_answer_message(STK500V2* stk500v2, STK500V2_Message* message, STK500V2_Message* answer);
-uint8_t stk500v2_message_checksum(STK500V2_Message* message);
+private:
+    Serial* _serial;
+};
 
 #endif // STK500V2_H

@@ -155,6 +155,16 @@
           <string>Chromasound Pro Direct</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Chromasound Prodigy</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Chromasound Prodigy Direct</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item>
@@ -177,7 +187,7 @@
       <item>
        <widget class="QProgressBar" name="progressBar">
         <property name="value">
-         <number>24</number>
+         <number>0</number>
         </property>
        </widget>
       </item>
