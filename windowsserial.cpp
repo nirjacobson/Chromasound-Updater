@@ -20,8 +20,9 @@ void WindowsSerial::setPort(const QString &port)
     }
 
     std::string portStr = port.toStdString();
-    std::wstring temp = std::wstring(portStr.begin(), portStr.end());
-    LPCWSTR portName = temp.c_str();
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::wstring wide = converter.from_bytes(portStr.c_str());
+    LPCWSTR portName = wide.c_str();
 
     _handle = CreateFile(portName,
                          GENERIC_READ | GENERIC_WRITE,
@@ -45,8 +46,12 @@ void WindowsSerial::writeData(const void *data, size_t size)
 {
     DWORD bytesWritten = 0;
 
-    if (!WriteFile(_handle, data, size, &bytesWritten, NULL)) {
-        printf("Could not write data from serial port.\n");
+    while (bytesWritten < size) {
+        DWORD temp = 0;
+        if (!WriteFile(_handle, (const char*)data + bytesWritten, size - bytesWritten, &temp, NULL)) {
+            printf("Could not write data from serial port.\n");
+        }
+        bytesWritten += temp;
     }
 }
 
@@ -54,9 +59,32 @@ void WindowsSerial::readData(void *data, size_t size)
 {
     DWORD bytesRead = 0;
 
-    if (!ReadFile(_handle, data, size, &bytesRead, NULL)) {
-        printf("Could not read data from serial port.\n");
+    while (bytesRead < size) {
+        DWORD temp = 0;
+        if (!ReadFile(_handle, (char*)data + bytesRead, size - bytesRead, &temp, NULL)) {
+            printf("Could not read data from serial port.\n");
+        }
+        bytesRead += temp;
     }
+}
+
+QStringList WindowsSerial::serialPorts()
+{
+    QStringList ports;
+
+    TCHAR lpTargetPath[1000]; // buffer to store the path of the COMPORTS
+    DWORD test;
+
+    for(int i=0; i<255; i++) // checking ports from COM0 to COM255
+    {
+        QString commName = QString("COM%1").arg(i);
+
+        if (testPort(i)) {
+            ports.append(commName);
+        }
+    }
+
+    return ports;
 }
 
 void WindowsSerial::setupPort()
@@ -89,4 +117,14 @@ void WindowsSerial::setupPort()
     if (!SetCommTimeouts(_handle, &timeouts)) {
         printf("Could not set serial port timeouts.\n");
     }
+}
+
+bool WindowsSerial::testPort(int i)
+{
+    TCHAR lpTargetPath[1000]; // buffer to store the path of the COMPORTS
+
+    std::string commName = "COM" + std::to_string(i);
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::wstring wide = converter.from_bytes(commName.c_str());
+    return QueryDosDeviceW((LPCWSTR)wide.c_str(), (LPWSTR)lpTargetPath, 1000);
 }

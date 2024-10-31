@@ -8,7 +8,10 @@
 
 #include "chromasound.h"
 #include "stk500v2.h"
+
+#ifdef Q_OS_LINUX
 #include "gpio.h"
+#endif
 
 class Programmer : public QThread
 {

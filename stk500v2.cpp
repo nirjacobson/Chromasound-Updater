@@ -11,7 +11,7 @@ void STK500v2::sendMessage(STK500V2_Message* message, STK500V2_Message* response
     message->checksum = message->getChecksum();
 
     int writeSize = message->size + 6;
-    char writeData[writeSize];
+    char* writeData = new char[writeSize];
 
     writeData[0] = message->start;
     writeData[1] = message->sequenceNumber;
@@ -23,6 +23,8 @@ void STK500v2::sendMessage(STK500V2_Message* message, STK500V2_Message* response
 
     _serial->writeData(writeData, writeSize);
 
+    delete [] writeData;
+
     char readData[512];
     _serial->readData(readData, 4);
 
@@ -31,13 +33,21 @@ void STK500v2::sendMessage(STK500V2_Message* message, STK500V2_Message* response
         memcpy(readData, readData + 1, 4);
     }
 
-    size_t restSize = (readData[2] << 8 | readData[3]) + 2;
+    size_t restSize = readData[2];
+    restSize &= 0xFF;
+    restSize <<= 8;
+    restSize |= readData[3] & 0xFF;
+    restSize += 2;
+
     _serial->readData(readData + 4, restSize);
 
     response->init();
     response->start = readData[0];
     response->sequenceNumber = readData[1];
-    response->size = (readData[2] << 8) | readData[3];
+    response->size = readData[2];
+    response->size &= 0xFF;
+    response->size <<= 8;
+    response->size |= readData[3] & 0xFF;
     response->token = readData[4];
     memcpy(response->body, &readData[5], response->size);
     response->checksum = readData[response->size + 5];

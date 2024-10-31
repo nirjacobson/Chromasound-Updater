@@ -5,7 +5,7 @@
 #include <QMessageBox>
 
 #include "serial.h"
-#if Q_OS_WIN
+#ifdef Q_OS_WIN
 #include "windowsserial.h"
 #else
 #include "linuxserial.h"

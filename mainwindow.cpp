@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-#if Q_OS_WIN
+#ifdef Q_OS_WIN
     _serial = new WindowsSerial;
 #else
     _serial = new LinuxSerial;

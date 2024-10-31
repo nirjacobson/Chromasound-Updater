@@ -16,6 +16,7 @@ void Programmer::program(const Chromasound& chromasound)
 
 void Programmer::run()
 {
+#ifdef Q_OS_LINUX
     if (_chromasound->isDirect()) {
         QProcess rmmod;
         rmmod.start("rmmod", QStringList() << "spi_bcm2835");
@@ -37,6 +38,7 @@ void Programmer::run()
         modprobe.start("modprobe", QStringList() << "spi_bcm2835");
         modprobe.waitForFinished(-1);
     }
+#endif
 
     STK500V2_Message message;
     STK500V2_Message response;
