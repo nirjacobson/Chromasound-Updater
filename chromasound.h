@@ -14,13 +14,15 @@ public:
     int pageSize() const;
     bool isDirect() const;
     const QString& firmwareFile() const;
+    const QByteArray& signature() const;
 
 private:
-    Chromasound(int pageSize, bool isDirect, const QString& firmwareFile);
+    Chromasound(int pageSize, bool isDirect, const QString& firmwareFile, const QByteArray& signature);
 
     int _pageSize;
     bool _isDirect;
     QString _firmwareFile;
+    QByteArray _signature;
 };
 
 #endif // CHROMASOUND_H

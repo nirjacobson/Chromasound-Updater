@@ -129,6 +129,7 @@ void Programmer::run()
 
     message.init();
     message.body[0] = STK500V2_CMD_READ_SIGNATURE_ISP;
+    message.body[4] = 0;
     message.size = 6;
 
     _stk500v2->sendMessage(&message, &response);
@@ -140,7 +141,9 @@ void Programmer::run()
         return;
     }
 
-    // Get signature byte
+    QByteArray signature;
+
+    signature.append(response.body[2]);
 
     message.init();
     message.body[0] = STK500V2_CMD_READ_SIGNATURE_ISP;
@@ -156,7 +159,7 @@ void Programmer::run()
         return;
     }
 
-    // Get signature byte
+    signature.append(response.body[2]);
 
     message.init();
     message.body[0] = STK500V2_CMD_READ_SIGNATURE_ISP;
@@ -172,7 +175,12 @@ void Programmer::run()
         return;
     }
 
-    // Get signature byte
+    signature.append(response.body[2]);
+
+    if (signature != _chromasound->signature()) {
+        emit error("Invalid device signature.");
+        return;
+    }
 
     message.init();
     message.body[0] = STK500V2_CMD_READ_FUSE_ISP;
