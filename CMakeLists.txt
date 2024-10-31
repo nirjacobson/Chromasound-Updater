@@ -35,8 +35,8 @@ if (WIN32)
 else()
     set (PROJECT_SOURCES
         ${PROJECT_SOURCES}
-        linuxserial.h
-        linuxserial.cpp)
+        posixserial.h
+        posixserial.cpp)
 
     if (LINUX)
         set (PROJECT_SOURCES

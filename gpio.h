@@ -1,6 +1,8 @@
 #ifndef GPIO_H
 #define GPIO_H
 
+#include <QProcess>
+
 #include <linux/gpio.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -18,6 +20,8 @@ class GPIO {
 public:
     GPIO();
     ~GPIO();
+
+    static bool available();
 
     void write(int pin, int value);
 

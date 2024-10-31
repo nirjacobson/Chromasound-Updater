@@ -1,5 +1,5 @@
-#ifndef LINUXSERIAL_H
-#define LINUXSERIAL_H
+#ifndef POSIXSERIAL_H
+#define POSIXSERIAL_H
 
 #include <fcntl.h>
 #include <termios.h>
@@ -11,11 +11,11 @@
 
 #include "serial.h"
 
-class LinuxSerial : public Serial
+class POSIXSerial : public Serial
 {
 public:
-    LinuxSerial();
-    ~LinuxSerial();
+    POSIXSerial();
+    ~POSIXSerial();
 
     void setPort(const QString& port);
     void writeData(const void* data, size_t size);
@@ -30,4 +30,4 @@ private:
     void setupPort();
 };
 
-#endif // LINUXSERIAL_H
+#endif // POSIXSERIAL_H

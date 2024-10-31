@@ -8,7 +8,7 @@
 #ifdef Q_OS_WIN
 #include "windowsserial.h"
 #else
-#include "linuxserial.h"
+#include "posixserial.h"
 #endif
 
 #include "stk500v2.h"
@@ -36,6 +36,7 @@ private:
     Programmer* _programmer;
 
 private slots:
+    void deviceChanged(const QString& device);
     void flashClicked();
     void programmerProgress(float progress);
     void programmerDone();

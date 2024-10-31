@@ -1,19 +1,19 @@
-#include "linuxserial.h"
+#include "posixserial.h"
 
-LinuxSerial::LinuxSerial()
+POSIXSerial::POSIXSerial()
     : _fd(-1)
 {
 
 }
 
-LinuxSerial::~LinuxSerial()
+POSIXSerial::~POSIXSerial()
 {
     if (_fd != -1) {
         close(_fd);
     }
 }
 
-void LinuxSerial::setPort(const QString& port)
+void POSIXSerial::setPort(const QString& port)
 {
     _port = port;
 
@@ -26,7 +26,7 @@ void LinuxSerial::setPort(const QString& port)
     setupPort();
 }
 
-void LinuxSerial::writeData(const void* data, size_t size)
+void POSIXSerial::writeData(const void* data, size_t size)
 {
     size_t written = 0;
     do {
@@ -34,7 +34,7 @@ void LinuxSerial::writeData(const void* data, size_t size)
     } while (written < size);
 }
 
-void LinuxSerial::readData(void* data, size_t size)
+void POSIXSerial::readData(void* data, size_t size)
 {
     size_t didRead = 0;
     do {
@@ -42,7 +42,7 @@ void LinuxSerial::readData(void* data, size_t size)
     } while (didRead < size);
 }
 
-QStringList LinuxSerial::serialPorts()
+QStringList POSIXSerial::serialPorts()
 {
     QDir devDir("/dev");
 
@@ -62,7 +62,7 @@ QStringList LinuxSerial::serialPorts()
     return result;
 }
 
-void LinuxSerial::setupPort()
+void POSIXSerial::setupPort()
 {
     struct termios tty;
 

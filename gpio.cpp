@@ -23,6 +23,17 @@ GPIO::~GPIO()
     }
 }
 
+bool GPIO::available()
+{
+    QProcess process;
+    process.start("grep", QStringList() << "Model" << "/proc/cpuinfo");
+    process.waitForFinished(-1);
+
+    QString output = process.readAllStandardOutput();
+
+    return output.contains("Raspberry Pi");
+}
+
 void GPIO::write(int pin, int value)
 {
     int ret;
