@@ -197,7 +197,7 @@ void Programmer::run()
         return;
     }
 
-    // Get low fuse byte
+    quint8 lowFuse = response.body[2];
 
     message.init();
     message.body[0] = STK500V2_CMD_READ_FUSE_ISP;
@@ -214,7 +214,7 @@ void Programmer::run()
         return;
     }
 
-    // Get high fuse byte
+    quint8 highFuse = response.body[2];
 
     message.init();
     message.body[0] = STK500V2_CMD_READ_FUSE_ISP;
@@ -231,7 +231,14 @@ void Programmer::run()
         return;
     }
 
-    // Get extended fuse byte
+    quint8 extendedFuse = response.body[2];
+
+    if ((lowFuse      != _chromasound->lowFuse())  ||
+        (highFuse     != _chromasound->highFuse()) ||
+        (extendedFuse != _chromasound->extendedFuse())) {
+        emit error("Invalid fuse settings.");
+        return;
+    }
 
     message.init();
     message.body[0] = STK500V2_CMD_CHIP_ERASE_ISP;

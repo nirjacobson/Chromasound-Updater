@@ -111,4 +111,5 @@ void MainWindow::programmerDone()
 void MainWindow::programmerError(const QString& error)
 {
     QMessageBox::critical(this, "Error", error);
+    ui->flashButton->setEnabled(true);
 }

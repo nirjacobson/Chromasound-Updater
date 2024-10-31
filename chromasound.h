@@ -15,14 +15,20 @@ public:
     bool isDirect() const;
     const QString& firmwareFile() const;
     const QByteArray& signature() const;
+    quint8 lowFuse() const;
+    quint8 highFuse() const;
+    quint8 extendedFuse() const;
 
 private:
-    Chromasound(int pageSize, bool isDirect, const QString& firmwareFile, const QByteArray& signature);
+    Chromasound(int pageSize, bool isDirect, const QString& firmwareFile, const QByteArray& signature, const quint8 lowFuse, const quint8 highFuse, const quint8 extendedFuse);
 
     int _pageSize;
     bool _isDirect;
     QString _firmwareFile;
     QByteArray _signature;
+    quint8 _lowFuse;
+    quint8 _highFuse;
+    quint8 _extendedFuse;
 };
 
 #endif // CHROMASOUND_H
