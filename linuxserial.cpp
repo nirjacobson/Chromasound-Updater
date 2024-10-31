@@ -21,7 +21,7 @@ void LinuxSerial::setPort(const QString& port)
         close(_fd);
     }
 
-    _fd = open(_port.toStdString().c_str(), O_RDWR);
+    _fd = open(_port.toStdString().c_str(), O_RDWR | O_NONBLOCK);
 
     setupPort();
 }
@@ -46,7 +46,12 @@ QStringList LinuxSerial::serialPorts()
 {
     QDir devDir("/dev");
 
+#ifdef Q_OS_MACOS
+    QFileInfoList fileInfoList = devDir.entryInfoList(QStringList{"tty.*"}, QDir::Filters{QDir::System});
+#else
     QFileInfoList fileInfoList = devDir.entryInfoList(QStringList{"ttyS*", "ttyUSB*", "ttyAMA*"}, QDir::Filters{QDir::System});
+#endif
+
 
     QStringList result;
 
