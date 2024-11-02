@@ -59,22 +59,22 @@ void MainWindow::flashClicked()
     if (GPIO::available()) {
         switch (ui->deviceComboBox->currentIndex()) {
         case 0:
-            _programmer->program(Chromasound::ChromasoundNova);
+            _programmer->program(Chromasound::ChromasoundNova, 1 - ui->firmwareComboBox->currentIndex());
             break;
         case 1:
-            _programmer->program(Chromasound::ChromasoundNovaDirect);
+            _programmer->program(Chromasound::ChromasoundNovaDirect, 1 - ui->firmwareComboBox->currentIndex());
             break;
         case 2:
-            _programmer->program(Chromasound::ChromasoundPro);
+            _programmer->program(Chromasound::ChromasoundPro, 1 - ui->firmwareComboBox->currentIndex());
             break;
         case 3:
-            _programmer->program(Chromasound::ChromasoundProDirect);
+            _programmer->program(Chromasound::ChromasoundProDirect, 1 - ui->firmwareComboBox->currentIndex());
             break;
         case 4:
-            _programmer->program(Chromasound::ChromasoundPro);
+            _programmer->program(Chromasound::ChromasoundPro, 1 - ui->firmwareComboBox->currentIndex());
             break;
         case 5:
-            _programmer->program(Chromasound::ChromasoundProDirect);
+            _programmer->program(Chromasound::ChromasoundProDirect, 1 - ui->firmwareComboBox->currentIndex());
             break;
         }
     } else {
@@ -82,13 +82,13 @@ void MainWindow::flashClicked()
 
         switch (ui->deviceComboBox->currentIndex()) {
         case 0:
-            _programmer->program(Chromasound::ChromasoundNova);
+            _programmer->program(Chromasound::ChromasoundNova, 1 - ui->firmwareComboBox->currentIndex());
             break;
         case 1:
-            _programmer->program(Chromasound::ChromasoundPro);
+            _programmer->program(Chromasound::ChromasoundPro, 1 - ui->firmwareComboBox->currentIndex());
             break;
         case 2:
-            _programmer->program(Chromasound::ChromasoundPro);
+            _programmer->program(Chromasound::ChromasoundPro, 1 - ui->firmwareComboBox->currentIndex());
             break;
         }
 

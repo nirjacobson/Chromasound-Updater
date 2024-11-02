@@ -2,10 +2,12 @@
 #define CHROMASOUND_H
 
 #include <QString>
+#include <QUrl>
 
 class Chromasound
 {
 public:
+    static const QUrl FirmwareURL;
     static const Chromasound ChromasoundNova;
     static const Chromasound ChromasoundNovaDirect;
     static const Chromasound ChromasoundPro;

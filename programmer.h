@@ -7,6 +7,7 @@
 #include <QProcess>
 
 #include "chromasound.h"
+#include "filedownloader.h"
 #include "stk500v2.h"
 
 #ifdef Q_OS_LINUX
@@ -19,8 +20,9 @@ class Programmer : public QThread
 
 public:
     Programmer(STK500v2* stk500v2);
+    ~Programmer();
 
-    void program(const Chromasound& chromasound);
+    void program(const Chromasound& chromasound, const bool latest);
 
 signals:
     void error(const QString& string);
@@ -34,6 +36,8 @@ protected:
 private:
     STK500v2* _stk500v2;
     const Chromasound* _chromasound;
+    QByteArray _firmware;
+    FileDownloader* _downloader;
 };
 
 #endif // PROGRAMMER_H

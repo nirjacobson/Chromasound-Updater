@@ -3,15 +3,34 @@
 Programmer::Programmer(STK500v2* stk500v2)
     : _stk500v2(stk500v2)
     , _chromasound(nullptr)
+    , _downloader(nullptr)
 {
 
 }
 
-void Programmer::program(const Chromasound& chromasound)
+Programmer::~Programmer()
+{
+    delete _downloader;
+}
+
+void Programmer::program(const Chromasound& chromasound, const bool latest)
 {
     _chromasound = &chromasound;
 
-    start();
+    if (latest) {
+        if (_downloader) delete _downloader;
+        _downloader = new FileDownloader(Chromasound::FirmwareURL.resolved(QUrl(chromasound.firmwareFile())), this);
+        connect(_downloader, &FileDownloader::downloaded, this, [=](){
+            _firmware = _downloader->downloadedData();
+            start();
+        });
+    } else {
+        QFile file(":/res/"+_chromasound->firmwareFile());
+        file.open(QIODevice::ReadOnly);
+        _firmware = file.readAll();
+        file.close();
+        start();
+    }
 }
 
 void Programmer::run()
@@ -254,11 +273,7 @@ void Programmer::run()
 
     /* Write the file */
 
-    QFileInfo fileInfo(_chromasound->firmwareFile());
-    QFile file(_chromasound->firmwareFile());
-    file.open(QIODevice::ReadOnly);
-
-    int numPages = qCeil((float)fileInfo.size() / _chromasound->pageSize());
+    int numPages = qCeil((float)_firmware.size() / _chromasound->pageSize());
 
     int processed = 0;
     for (int i = 0; i < numPages; i++) {
@@ -279,8 +294,7 @@ void Programmer::run()
             return;
         }
 
-        file.seek(i * _chromasound->pageSize());
-        QByteArray page = file.read(_chromasound->pageSize());
+        QByteArray page = _firmware.mid(i * _chromasound->pageSize(), _chromasound->pageSize());
 
         message.init();
         message.body[0] = STK500V2_CMD_PROGRAM_FLASH_ISP;
@@ -301,7 +315,7 @@ void Programmer::run()
 
         processed += page.size();
 
-        emit progress( (float)processed / fileInfo.size() / 2.0f * 100.0f );
+        emit progress( (float)processed / _firmware.size() / 2.0f * 100.0f );
     }
 
     emit progress(50);
@@ -327,8 +341,7 @@ void Programmer::run()
             return;
         }
 
-        file.seek(i * _chromasound->pageSize());
-        QByteArray page = file.read(_chromasound->pageSize());
+        QByteArray page = _firmware.mid(i * _chromasound->pageSize(), _chromasound->pageSize());
 
         message.init();
         message.body[0] = STK500V2_CMD_READ_FLASH_ISP;
@@ -353,10 +366,8 @@ void Programmer::run()
 
         processed += page.size();
 
-        emit progress( 50 + (((float)processed / fileInfo.size() / 2.0f) * 100.0f) );
+        emit progress( 50 + (((float)processed / _firmware.size() / 2.0f) * 100.0f) );
     }
-
-    file.close();
 
     emit progress(100);
 

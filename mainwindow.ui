@@ -141,6 +141,27 @@
        </widget>
       </item>
       <item>
+       <widget class="QLabel" name="firmwareLabel">
+        <property name="text">
+         <string>Firmware:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="firmwareComboBox">
+        <item>
+         <property name="text">
+          <string>Latest (requires Internet connection)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Bundled</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="portLabel">
         <property name="text">
          <string>Port:</string>
