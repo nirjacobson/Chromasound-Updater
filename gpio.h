@@ -21,8 +21,6 @@ public:
     GPIO();
     ~GPIO();
 
-    static bool available();
-
     void write(int pin, int value);
 
 private:

@@ -35,6 +35,8 @@ private:
     STK500v2* _stk500v2;
     Programmer* _programmer;
 
+    static bool isRaspberryPi();
+
 private slots:
     void deviceChanged(const QString& device);
     void flashClicked();

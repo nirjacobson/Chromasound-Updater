@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->portComboBox->addItems(_serial->serialPorts());
 
 #ifdef Q_OS_LINUX
-    if (GPIO::available()) {
+    if (isRaspberryPi()) {
         ui->deviceComboBox->insertItem(1, "Chromasound Nova Direct");
         ui->deviceComboBox->insertItem(3, "Chromasound Pro Direct");
         ui->deviceComboBox->insertItem(5, "Chromasound Prodigy Direct");
@@ -43,6 +43,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+bool MainWindow::isRaspberryPi()
+{
+    QProcess process;
+    process.start("grep", QStringList() << "Model" << "/proc/cpuinfo");
+    process.waitForFinished(-1);
+
+    QString output = process.readAllStandardOutput();
+
+    return output.contains("Raspberry Pi");
+}
+
 void MainWindow::deviceChanged(const QString& device)
 {
     ui->instructionLabel->setVisible(!device.toLower().contains("direct"));
@@ -56,7 +67,7 @@ void MainWindow::flashClicked()
 
 
 #ifdef Q_OS_LINUX
-    if (GPIO::available()) {
+    if (isRaspberryPi()) {
         switch (ui->deviceComboBox->currentIndex()) {
         case 0:
             _programmer->program(Chromasound::ChromasoundNova, 1 - ui->firmwareComboBox->currentIndex());
