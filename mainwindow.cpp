@@ -45,13 +45,29 @@ MainWindow::~MainWindow()
 
 bool MainWindow::isRaspberryPi()
 {
-    QProcess process;
-    process.start("grep", QStringList() << "Model" << "/proc/cpuinfo");
-    process.waitForFinished(-1);
+    QFile cpuinfo("/proc/cpuinfo");
 
-    QString output = process.readAllStandardOutput();
+    if (cpuinfo.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if (cpuinfo.isReadable()) {
+            QString contents = cpuinfo.readAll();
+            QTextStream textStream(&contents);
 
-    return output.contains("Raspberry Pi");
+            while (!textStream.atEnd()) {
+                QString line = textStream.readLine();
+
+                if (line.startsWith("Model")) {
+                    cpuinfo.close();
+                    return line.contains("Raspberry Pi");
+                }
+            }
+        }
+
+        cpuinfo.close();
+    } else {
+        qDebug() << cpuinfo.errorString();
+    }
+
+    return false;
 }
 
 void MainWindow::deviceChanged(const QString& device)
