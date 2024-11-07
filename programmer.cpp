@@ -25,7 +25,7 @@ void Programmer::program(const Chromasound& chromasound, const bool latest)
             start();
         });
     } else {
-        QFile file(":/res/"+_chromasound->firmwareFile());
+        QFile file(":/firmware/"+_chromasound->firmwareFile());
         file.open(QIODevice::ReadOnly);
         _firmware = file.readAll();
         file.close();

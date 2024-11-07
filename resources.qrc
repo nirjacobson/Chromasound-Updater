@@ -1,9 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>img/chromasound-studio.png</file>
-        <file>res/cspro.bin</file>
-        <file>res/csnova.bin</file>
-        <file>res/csnova-direct.bin</file>
-        <file>res/cspro-direct.bin</file>
+        <file>firmware/csnova.bin</file>
+        <file>firmware/csnova-direct.bin</file>
+        <file>firmware/cspro.bin</file>
+        <file>firmware/cspro-direct.bin</file>
     </qresource>
 </RCC>
