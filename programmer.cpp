@@ -37,9 +37,7 @@ void Programmer::run()
 {
 #ifdef Q_OS_LINUX
     if (_chromasound->isDirect()) {
-        QProcess rmmod;
-        rmmod.start("rmmod", QStringList() << "spi_bcm2835");
-        rmmod.waitForFinished(-1);
+        delete_module("spi_bcm2835", 0);
 
         GPIO* gpio = new GPIO();
 
@@ -52,10 +50,6 @@ void Programmer::run()
         gpio->write(8, 1);
 
         delete gpio;
-
-        QProcess modprobe;
-        modprobe.start("modprobe", QStringList() << "spi_bcm2835");
-        modprobe.waitForFinished(-1);
     }
 #endif
 
@@ -384,4 +378,10 @@ void Programmer::run()
     }
 
     emit done();
+
+#ifdef Q_OS_LINUX
+    if (_chromasound->isDirect()) {
+        emit info("If SPI was enabled before, please reboot to re-enable it.");
+    }
+#endif
 }

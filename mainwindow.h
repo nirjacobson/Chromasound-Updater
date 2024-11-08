@@ -43,5 +43,6 @@ private slots:
     void programmerProgress(float progress);
     void programmerDone();
     void programmerError(const QString& error);
+    void programmerInfo(const QString& info);
 };
 #endif // MAINWINDOW_H

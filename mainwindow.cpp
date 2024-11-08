@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(_programmer, &Programmer::progress, this, &MainWindow::programmerProgress);
     connect(_programmer, &Programmer::done, this, &MainWindow::programmerDone);
     connect(_programmer, &Programmer::error, this, &MainWindow::programmerError);
+    connect(_programmer, &Programmer::info, this, &MainWindow::programmerInfo);
 }
 
 MainWindow::~MainWindow()
@@ -139,4 +140,9 @@ void MainWindow::programmerError(const QString& error)
 {
     QMessageBox::critical(this, "Error", error);
     ui->flashButton->setEnabled(true);
+}
+
+void MainWindow::programmerInfo(const QString& info)
+{
+    QMessageBox::information(this, "Note", info);
 }
