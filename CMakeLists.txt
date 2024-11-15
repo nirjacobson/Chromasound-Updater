@@ -13,10 +13,6 @@ set(LINUX_ARM ON)
 find_package(QT NAMES Qt6 REQUIRED COMPONENTS Widgets Network)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Network)
 
-if (NOT LINUX_ARM)
-    include_directories("/usr/x86_64-pc-linux-gnu/usr/lib/gcc/x86_64-pc-linux-gnu/14/include/g++-v14/")
-endif()
-
 set(CMAKE_OSX_ARCHITECTURES x86_64 arm64)
 
 set(PROJECT_SOURCES
