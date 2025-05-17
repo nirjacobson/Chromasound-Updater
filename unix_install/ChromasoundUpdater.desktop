@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Icon=chromasound-updater
+Exec=Chromasound-Updater
+StartupWMClass=Chromasound-Updater
+Terminal=false
+Categories=Utility;SystemTool;X-Chromasound;
+
+Name=Chromasound Updater
+GenericName=Chromasound Updater
+Comment=Update the firmware on your Chromasound

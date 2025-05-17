@@ -120,6 +120,15 @@ install(TARGETS Chromasound-Updater
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
+if (LINUX)
+  install(FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/unix_install/chromasound-updater.png DESTINATION /usr/share/icons)
+  install(FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/unix_install/chromasound.directory DESTINATION /usr/share/desktop-directories)
+  install(FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/unix_install/ChromasoundUpdater.desktop DESTINATION /usr/share/applications)
+endif()
+
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(Chromasound-Updater)
 endif()
