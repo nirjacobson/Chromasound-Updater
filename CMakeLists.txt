@@ -122,7 +122,7 @@ install(TARGETS Chromasound-Updater
 
 if (LINUX)
   install(FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/unix_install/chromasound-updater.png DESTINATION /usr/share/icons)
+    ${CMAKE_CURRENT_SOURCE_DIR}/unix_install/chromasound-updater.svg DESTINATION /usr/share/icons)
   if (NOT EXISTS /usr/share/desktop-directories/chromasound.directory)
     install(FILES
       ${CMAKE_CURRENT_SOURCE_DIR}/unix_install/chromasound.directory DESTINATION /usr/share/desktop-directories)
