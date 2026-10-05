@@ -11,6 +11,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if (WIN32)
     set(CMAKE_PREFIX_PATH "C:/Qt-6.12.0" ${CMAKE_PREFIX_PATH})
+elseif (APPLE)
+    set(CMAKE_PREFIX_PATH "/usr/local/Qt-6.12.0" ${CMAKE_PREFIX_PATH})
 endif()
 
 find_package(QT NAMES Qt6 REQUIRED COMPONENTS Widgets Network)
